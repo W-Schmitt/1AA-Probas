@@ -1,0 +1,164 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{minted}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{geometry}
+
+  % added for comments and todo
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,
+top=25mm,bottom=25mm}
+
+\title{Probabilités}
+\date{03 mai 2017}
+
+\begin{document}
+\maketitle
+
+\section{Variables aléatoires}
+$X$ est une variable aléatoire.
+
+$$\mathbb{E}(x) = \int_{\Omega} X(\omega) d\mathbb{P}(\omega)$$
+
+\subsection{Cas discret}
+\[
+  \mathbb{E}(X)=\sum_{\textit{k possibles}} k.\mathbb{P}(X=k)
+\]
+
+\subsection{Rappels}
+\subsubsection{Bernoulli}
+
+$b(p)$, avec $0<p<1$
+  \begin{itemize}
+    \item $\mathbb{P}(X=0) = 1-\mathbb{P}(X=1)=1-p$
+    \item $\mathbb{E}(X)=0(1-p)+1 \times p = p$
+  \end{itemize}
+
+\subsubsection{Binomiale}
+
+$B(n,p)$, avec $n \in \mathbb{N}^{*}, p \in ] 0,1 [$
+  \begin{itemize}
+    \item Valeurs possibles: $k \in \{0,1,...,n\}$
+    \item $\mathbb{P}(X=k) = \binom{n}{k} p^k (1-p)^{n-k}$
+    \item $$\mathbb{E}(Y) = \sum_{k=0}^n k \binom{n}{k} p^k(1-p)^{n-k} = np$$
+  \end{itemize}
+
+\subsubsection{Géométrique}
+
+$G(p)$, avec $0<p<1$
+  \begin{itemize}
+    \item Valeurs possibles : $\{1,2,3,...\}=\mathbb{N}^{*}$
+    \item $ \mathbb{P}(X=k)=(1-p)^{k-1}p$
+  \end{itemize}
+
+\subsubsection{Loi de poisson}
+
+$\lambda > 0$
+  \begin{itemize}
+    \item Valeurs possibles: $\mathbb{N}$
+    \item $P(X=k)= \frac{\lambda^{k}}{k!}e^{-\lambda}$
+    \item $$ \mathbb{E}(X) = \sum_{k=0}^{+ \infty} k \frac{\lambda^k}{k!}e^{-\lambda} = \lambda \sum_{k=1}^{+ \infty} k \frac{\lambda^{k-1}}{(k-1)!}e^{-\lambda} $$
+    Or, $\forall x \in \mathbb{R}$, $$e^x = \sum_{k=0}^{+ \infty} \frac{x^k}{k!}$$
+    Après changement de variable, on voit donc $\mathbb{E}(X) = \lambda$
+  \end{itemize}
+
+\subsubsection{Loi équirépartie}
+
+sur $k \in [0,...,n]$
+  \begin{itemize}
+    \item $\mathbb{P}(X=k) = \frac{1}{n+1}$
+  \end{itemize}
+
+\subsection{Théorème de transfert}
+Si $f: \mathbb{R} \mapsto \mathbb{R}$
+
+$$\mathbb{E}(f(x)) = \sum_{\textit{k possibles}} f(k) \mathbb{P}(X=k)$$
+
+\section{Variance}
+
+L'espérance d'une variable est la valeur la \textit{plus représentative} prise
+par cette variable.
+
+C'est une "mesure moyenne de l'écart avec la moyenne".
+
+\begin{align*}
+  VAR(X) &= \mathbb{E}[(X- \mathbb{E})^2] \geq 0 \\
+  &= \mathbb{E}[X^2 - 2X\mathbb{E}(X) + (\mathbb{E}(X))^2] \\
+  &= \mathbb{E}(X^2) - \mathbb{E}(2X\mathbb{E}(X))+ \mathbb{E}((\mathbb{E}(X))^2) \\
+  &= \mathbb{E}(X^2) - 2\mathbb{E}(X)\mathbb{E}(X) + (\mathbb{E}(X))^2 \\
+  &= \mathbb{E}(X^2) - (\mathbb{E}(X))^2
+\end{align*}
+
+\subsection{Variances de variables aléatoires discrètes}
+
+\subsubsection{Bernoulli}
+
+$X \tilde{} b(p)$
+
+$$ \mathbb{E}(X^2) = 0^2(1-p) + 1^2 p = p $$
+$$ Var(X) = p - p^2 = p(1-p) $$
+
+\subsubsection{Binomiale}
+
+\paragraph{Aparté : variance d'une somme}
+
+\begin{align*}
+  VAR(X+Y) &= \mathbb{E}[(X+Y)^2] - (\mathbb{E}(X+Y)^2) \\
+  &= \mathbb{E}[X^2] + 2\mathbb{E}(XY) + \mathbb{E}(Y^2) - (\mathbb{E}(X))^2 - 2\mathbb{E}(X)\mathbb{E}(Y) - (\mathbb{E}(Y))^2
+  &= Var(X) + Var(Y) + 2[\mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)]
+\end{align*}
+
+avec $\mathbb{E}(X)\mathbb{E}(Y)$ la covariance de X et Y: $Cov(X,Y)$
+
+Si $X$ et $Y$ sont indépendantes, alors $\mathbb{E}(X)\mathbb{E}(Y) = Cov(X,Y) = 0$.
+
+\paragraph{Variance d'une binomiale}
+
+Puisque les différentes variables sont indépendantes, on peut déduire :
+$Var(Y) = np(1-p)$
+
+\subsubsection{Géométrique}
+$X \tilde{} G(p)$
+
+$Var(X) = \frac{1-p}{p^2}$
+
+\subsubsection{Loi de Poisson}
+$X \tilde{} P(\lambda)$
+
+$Var(X) = \lambda$
+
+\section{Lois continues}
+
+Caractérisées par
+\begin{itemize}
+  \item Un support
+  \item Une densité :
+  \begin{align*}
+    f: &\mathbb{R} \to \mathbb{R}^{*} \\
+    &x \mapsto f(x)
+  \end{align*}
+\end{itemize}
+
+\paragraph{Exemple :}
+Densité : $$ \int_{\mathbb{R}} f(x)dx = 1 $$.
+Support : $$ Supp(X) = \{ x \in \mathbb{R}, f(x) > 0 \}$$
+
+\subsection{Densité et espérance}
+Puisque la loi est continue, l'espérance n'est plus une simple somme mais une
+intégrale.
+
+Si $X$ est de densité $f_{X}$, alors $$\mathbb{E}(X) = \int_{- \infty}^{+ \infty} x f_{X}(x) dx$$
+
+Appliquons le \textit{théorême de transfert} :
+
+Si $g : \mathbb{R} \to \mathbb{R}$, alors
+
+$$\mathbb{E}(g(x)) = \int_{- \infty}^{+ \infty} f_{X}(x)dx $$
+
+\end{document}
