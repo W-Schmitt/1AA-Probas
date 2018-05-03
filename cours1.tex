@@ -161,4 +161,26 @@ Si $g : \mathbb{R} \to \mathbb{R}$, alors
 
 $$\mathbb{E}(g(x)) = \int_{- \infty}^{+ \infty} f_{X}(x)dx $$
 
+\subsection{Fonctions de répartition}
+
+$F_{X}(x) = \mathbb{P}(X \leq x)$
+
+Dans le cas d'une VA $X$ à densité $f_{X}$ :
+
+$$F_{X}(x) = \int_{- \infty}^{x} f_{X}(t)dt $$
+
+C'est donc l'aire sous la courbe de sa densité, arrêtée au point $x$.
+
+\subsubsection{Propriétés universelles}
+
+\begin{itemize}
+  \item $F_{X}$ est croissante au sens large
+  \item $$ \lim_{x \to + \infty} F_{x}(x) = 1 $$
+  \item $$ \lim_{x \to - \infty} F_{x}(x) = 0 $$
+  \item Une FDR est continue à droite
+\end{itemize}
+
+\paragraph{Remarque :} Dans le cas continu à densité, $F_{X}$ est continue.
+On a donc $F_{X}(x)' = f_{X}(x)$
+
 \end{document}
