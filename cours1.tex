@@ -6,6 +6,8 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{geometry}
+\usepackage{textcomp}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 
   % added for comments and todo
 \usepackage[colorinlistoftodos]{todonotes}
@@ -34,7 +36,7 @@ $$\mathbb{E}(x) = \int_{\Omega} X(\omega) d\mathbb{P}(\omega)$$
 \subsection{Rappels}
 \subsubsection{Bernoulli}
 
-$b(p)$, avec $0<p<1$
+$X \textapprox b(p)$, avec $0<p<1$
   \begin{itemize}
     \item $\mathbb{P}(X=0) = 1-\mathbb{P}(X=1)=1-p$
     \item $\mathbb{E}(X)=0(1-p)+1 \times p = p$
@@ -42,7 +44,7 @@ $b(p)$, avec $0<p<1$
 
 \subsubsection{Binomiale}
 
-$B(n,p)$, avec $n \in \mathbb{N}^{*}, p \in ] 0,1 [$
+$X \textapprox B(n,p)$, avec $n \in \mathbb{N}^{*}, p \in ] 0,1 [$
   \begin{itemize}
     \item Valeurs possibles: $k \in \{0,1,...,n\}$
     \item $\mathbb{P}(X=k) = \binom{n}{k} p^k (1-p)^{n-k}$
@@ -51,7 +53,7 @@ $B(n,p)$, avec $n \in \mathbb{N}^{*}, p \in ] 0,1 [$
 
 \subsubsection{Géométrique}
 
-$G(p)$, avec $0<p<1$
+$X \textapprox G(p)$, avec $0<p<1$
   \begin{itemize}
     \item Valeurs possibles : $\{1,2,3,...\}=\mathbb{N}^{*}$
     \item $ \mathbb{P}(X=k)=(1-p)^{k-1}p$
@@ -59,7 +61,7 @@ $G(p)$, avec $0<p<1$
 
 \subsubsection{Loi de poisson}
 
-$\lambda > 0$
+$X \textapprox \lambda > 0$
   \begin{itemize}
     \item Valeurs possibles: $\mathbb{N}$
     \item $P(X=k)= \frac{\lambda^{k}}{k!}e^{-\lambda}$
@@ -70,7 +72,7 @@ $\lambda > 0$
 
 \subsubsection{Loi équirépartie}
 
-sur $k \in [0,...,n]$
+$X \textapprox $ sur $k \in [0,...,n]$
   \begin{itemize}
     \item $\mathbb{P}(X=k) = \frac{1}{n+1}$
   \end{itemize}
@@ -99,7 +101,7 @@ C'est une "mesure moyenne de l'écart avec la moyenne".
 
 \subsubsection{Bernoulli}
 
-$X \tilde{} b(p)$
+$X \textapprox b(p)$
 
 $$ \mathbb{E}(X^2) = 0^2(1-p) + 1^2 p = p $$
 $$ Var(X) = p - p^2 = p(1-p) $$
@@ -124,12 +126,12 @@ Puisque les différentes variables sont indépendantes, on peut déduire :
 $Var(Y) = np(1-p)$
 
 \subsubsection{Géométrique}
-$X \tilde{} G(p)$
+$X \textapprox G(p)$
 
 $Var(X) = \frac{1-p}{p^2}$
 
 \subsubsection{Loi de Poisson}
-$X \tilde{} P(\lambda)$
+$X \textapprox P(\lambda)$
 
 $Var(X) = \lambda$
 
@@ -146,8 +148,10 @@ Caractérisées par
 \end{itemize}
 
 \paragraph{Exemple :}
-Densité : $$ \int_{\mathbb{R}} f(x)dx = 1 $$.
-Support : $$ Supp(X) = \{ x \in \mathbb{R}, f(x) > 0 \}$$
+\begin{itemize}
+  \item Densité : $$ \int_{\mathbb{R}} f(x)dx = 1 $$.
+  \item Support : $$ Supp(X) = \{ x \in \mathbb{R}, f(x) > 0 \}$$
+\end{itemize}
 
 \subsection{Densité et espérance}
 Puisque la loi est continue, l'espérance n'est plus une simple somme mais une
