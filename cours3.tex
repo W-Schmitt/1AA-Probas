@@ -1,0 +1,230 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{minted}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{textcomp}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+  % added for comments and todo
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,
+top=25mm,bottom=25mm}
+
+\title{Probabilités: cours 3}
+\date{15 mai 2017}
+
+\begin{document}
+\maketitle
+
+\section{Rappels}
+\subsection{Espérance}
+
+Mesure de tendance
+
+
+$\mathbb{E}(X)$ est de la même dimension que X. Deux façons de la calculer :
+\begin{itemize}
+  \item Cas discret : $$ \mathbb{E}(X) = \sum_k k\mathbb{P}(X=k) $$
+  \item Cas continu : $$ \mathbb{E}(X) = \int_{\mathbb{R}}xf(x)dx $$
+\end{itemize}
+
+Elle est sensible aux valeurs extrêmes.
+
+\paragraph{Propriétés :}
+
+\begin{itemize}
+  \item $$ \mathbb{E}[\sum_{k=1}^n a_k X_k] = \sum_{k=1}^n a_k \mathbb{E}(X_k) $$
+\end{itemize}
+
+\subsection{Variance et écart-type}
+
+Mesures de dispersion.
+
+$\textit{Var}(X)$ est de dimension au carré par rapport à $X$.
+$\sigma(x)$ est de même dimension que $X$.
+
+\subsubsection{Formules}
+\paragraph{Variance}
+\begin{itemize}
+  \item $$ \textit{Var}(X) = \mathbb{E}((X - \mathbb{E}(X))^2)  \geq 0$$
+  \item $$ \textit{Var}(X) = \mathbb{E}(X^2) - (\mathbb{E}(X))^2 $$
+\end{itemize}
+
+\subsubsection{Propriétés}
+\paragraph{Variance}
+\begin{itemize}
+  \item $ \textit{Var}(aX+b) = a^2\textit{Var}(X) $
+  \item $ \textit{Var}(X+Y) = \textit{Var}(X) + \textit{Var}(Y) + 2\textit{Cov}(X)$
+  où $ \textit{Cov}(X, Y) = \mathbb{E}(XY)-\mathbb{E}(X)\mathbb{E}(Y) $
+\end{itemize}
+
+\section{Fonctions génératrices}
+\begin{enumerate}
+  \item Fonction génératrice des probabilités : $ G_X(s) = \mathbb{E}(s^x) $
+  \item Fonction génératrice des moments : $ M_X(t) = \mathbb{E}(e^{tx}) $
+\end{enumerate}
+
+La première est utilisée dans les cas discrets, la seconde dans les cas discrets et continus.
+
+\subsection{Fonction génératrice des probabilités}
+\paragraph{Notation} $0^0 = 1$
+
+\paragraph{Exercice 2} Supposons $X$ à valeurs dans $\mathbb{N}$.
+
+\begin{align*}
+  G_X(s) &= \sum_{k=0}^{\infty} s^k \mathbb{P}(X=k) \\
+  G_X(0) &= \mathbb{P}(X=0)
+\end{align*}
+
+\begin{align*}
+  \frac{d}{ds}G_X(s) &= \mathbb{P}(X=1) + 2s\mathbb{P}(X=2) + ... + ks^{k-1}\mathbb{P}(X=k) + ... \\
+  &= \sum_{k=1}^{+ \infty} ks^{k-1}\mathbb{P}(X=k) \\
+  \frac{d}{ds}G_X(0) &= \mathbb{P}(X=1)
+\end{align*}
+
+Dérivons à nouveau :
+\begin{align*}
+  \frac{d^2}{ds^2}G_X(s) &= 2\mathbb{P}(X=2) + 6s\mathbb{P}(X=3) + ... + (k-1)ks^{k-2}\mathbb{P}(X=k) + ... \\
+  \frac{d}{ds}G_X(0) &= 2\mathbb{P}(X=2)
+\end{align*}
+
+Si on dérive $n$ fois :
+\begin{align*}
+  \frac{d^n}{ds^n}G_X(0) &= n!\mathbb{P}(X=n) \\
+  &\implies \mathbb{P}(X=n) = \frac{1}{n!}\bigg(\frac{d^n}{ds^n}G_X(0)\bigg)
+\end{align*}
+
+\subsubsection{Exemples}
+
+\paragraph{Loi de Bernoulli}
+
+$X \textapprox b(p)$
+
+\begin{align*}
+  G_X(s) &= s^0\mathbb{P}(X=0) + s^1(\mathbb{P}(X=1)) \\
+  &= (1-p) + sp
+\end{align*}
+
+Si $X_1,...,X_n$ sont des variables aléatoires indépendantes :
+\begin{align*}
+  G_{X_1+...+X_n}(S) &= \mathbb{E}(s^{X_1+...+X_n}) \\
+  &= \mathbb{E}\Big[ s^{X_1} \times s^{X_2} \times ... \times s^{X_n} \Big] \\
+  &\text{or il y a indépendance entre les VA} \\
+  &= \mathbb{E}(s^{X_1})\mathbb{E}(s^{X_2})...\mathbb{E}(s^{X_n}) \\
+  &= G_{X_1}(s)...G_{X_n}(s)
+\end{align*}
+
+\paragraph{Loi binomiale}
+$X \textapprox B(n,p)$
+
+$X = \sum_{k=1}^n B_k$ où $B_k \textapprox b(p)$ indépendantes.
+
+$G_X(s) = (G_B(s))^n = \big( (1-p) + sp \big)$
+
+Par calcul direct :
+\begin{align*}
+  G_X(s) &= \sum_{k=0}^n s^k \binom{n}{k} p^k(1-p)^{n-k} \\
+  &= \sum_{k=0}^n \binom{n}{k}(sp)^k(1-p)^{n-k}
+\end{align*}
+
+\paragraph{Loi géométrique}
+\begin{align*}
+  G_X(s) &= \mathbb{E}(s^x) \\
+  &= \sum_{k=1}^{+ \infty} s^k (1-p)^{k-1}p \\
+  &= ps \sum_{k=1}^{+ \infty} \big( s(1-p)\big)^{k-1} \\
+  &= \frac{ps}{1-s(1-p)}
+\end{align*}
+
+\paragraph{Loi de Poisson}
+\begin{align*}
+  G_X(s) &= \mathbb{E}(s^x) \\
+  &= \sum_{k=0}^{+ \infty} s^k \frac{\lambda^k}{k!} e^{-\lambda} \\
+  &= \bigg( \sum_{k=0}^{+ \infty} \frac{(s\lambda)^k}{k!}\bigg)e^{-\lambda} \\
+  &= e^{(s-1)\lambda}
+\end{align*}
+
+\subsubsection{Lien avec l'espérance}
+
+\begin{align*}
+  G_X'(s) &= \sum_{k=1}^{+ \infty} k s^{k-1} \mathbb{P}(X=k) \\
+  G_X'(1) &= \sum_{k=1}^{+ \infty} \mathbb{P}(X=k)  = \mathbb{E}(X)\\
+\end{align*}
+Si on dérive à nouveau...
+
+\begin{align*}
+  G_X''(s) &= \sum_{k=2}^{+ \infty} k (k-1)s^{k-2} \mathbb{P}(X=k) \\
+  G_X''(1) &= \sum_{k=2}^{+ \infty} \mathbb{P}(X=k)  = \mathbb{E}(X(X-1))\\
+  &= \mathbb{E}(X^2) - \mathbb{E}(X)
+\end{align*}
+
+\subsection{Fonction génératrice des moments}
+\begin{align*}
+  M'_X(t) &= \mathbb{E}\Big[ X e^{tX}\Big] \\
+  M'_X(0) &= \mathbb{E}(X) \\
+\end{align*}
+
+Dérivons...
+\begin{align*}
+  M''_X(t) &= \mathbb{E}\Big[ X^2 e^{tX}\Big] \\
+  M''_X(0) &= \mathbb{E}(X^2) \\
+\end{align*}
+
+Dérivons $n$ fois :
+\begin{align*}
+  M^{(n)}_X(t) &= \mathbb{E}\Big[ X^n e^{tX}\Big] \\
+  M^{(n)}_X(0) &= \mathbb{E}(X^n) \\
+\end{align*}
+
+\subsubsection{FGM dans le cas continu}
+
+\paragraph{Loi uniforme}
+
+\begin{align*}
+  M_X(t) &= \int_a^b e^{tx} \frac{1}{b-a}dx \\
+  &= \frac{1}{b-a} \bigg[ \frac{e^{tx}}{t} \bigg]^b_a \\
+  &= M_X(t) = \frac{e^{tb}- e^{ta}}{t(b-a)}
+\end{align*}
+
+\paragraph{Loi exponentielle}
+
+\begin{align*}
+  M_X(t) &= \int_0^{+ \infty} e^{tx} \lambda e^{-\lambda x}dx \\
+  &= \lambda \int_0^{+ \infty} e^{-(\lambda - t)x}dx \\
+  &= \frac{\lambda}{\lambda-t} \int_0^{+ \infty} (\lambda - t)e^{-(\lambda - t)x}dx \\
+  &= \frac{\lambda}{\lambda - t}
+\end{align*}
+Avec $t \leq \lambda$.
+
+\paragraph{Loi normale centrée réduite}
+$Z \textapprox \mathcal{N}(0,1)$
+\begin{align*}
+  f_Z(x) &= \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}} \\
+  \mathbb{E}(e^{tZ}) &= \int_{- \infty}^{+ \infty} e^{tx} \frac{1}{\sqrt{2 \pi}}e^{-\frac{x^2}{2}}dx \\
+  &= \int_{- \infty}^{+ \infty} \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2} + tx} dx \\
+  &\text{Contenu de l'exponentielle :} \\
+  &= - \frac{1}{2}(x^2 -2tx) \\
+  &= - \frac{1}{2} \bigg[(x-t)^2 - t^2 \bigg] \\
+  &= \int_{- \infty}^{+ \infty} \frac{1}{\sqrt{2 \pi}} e^{\frac{1}{2}(x-t)^2 + \frac{1}{2}t^2}dx \\
+  &= e^{\frac{1}{2}t^2} \int_{- \infty}^{+ \infty} \frac{1}{\sqrt{2 \pi}} e^{- \frac{1}{2}(x-t)^2}dx
+\end{align*}
+
+Or cette intégrale vaut 1 car c'est la densité d'une variable aléatoire de loi $\mathcal{N}(t,1)$.
+
+Donc $M_Z(t) = e^{\frac{t^2}{2}}$.
+
+\begin{align*}
+  X &= \sigma Z = \mu \\
+  M_X(t) &= \mathbb{E}(e^{tx}) \\
+  &= \mathbb{E}(e^{t(\sigma Z + \mu)}) \\
+  &= e^{t \mu} \mathbb{E}(e^{t \sigma Z}) \\
+  &= e^{t \mu}M_Z(t \sigma) \\
+  &= e^{t \mu + \frac{t^2 \sigma^2}{2}}
+\end{align*}
+\end{document}

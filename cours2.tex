@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{minted}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{textcomp}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+  % added for comments and todo
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,
+top=25mm,bottom=25mm}
+
+\title{Probabilités}
+\date{14 mai 2017}
+
+\begin{document}
+\maketitle
+
+\section{Eemple de lois continues}
+
+\subsection{Loi uniforme sur (a,b)}
+
+$a < b$
+
+
+$a, b \in \mathbb{R}$
+
+\begin{itemize}
+  \item Densité : $f(x) = \frac{1}{b-a} \mathbb{1}_{a,b}(x)$
+\item Fonction de répartition :
+\begin{align*}
+  F(x) &= \int_{- \infty}^{x} f(t)dt \\
+  &= 0 \textit{ si } x \leq a \\
+  &= \frac{x-a}{b-a} \textit{ si } a < x \leq b \\
+  &= 1 \textit{ si } x > b
+\end{align*}
+\item
+\begin{align*}
+  \mathbb{E}(X) &= \int_{- \infty}^{+ \infty}xf(x)dx = \int_{a}^{b} \frac{x}{b-a}dx \\
+  &= [ \frac{x}{2(b-a)}]_{a}^b \\
+  &= \frac{b^2 - a^2}{2(b-a)} \\
+  &= \frac{a+b}{2}
+\end{align*}
+\item
+\begin{align*}
+  \mathbb{E}(X^2) &= \int_{- \infty}^{+ \infty}x^2f(x)dx \\
+  &= \int_{a}^{b} \frac{x^2}{b-a} dx\\
+  &= [ \frac{x^3}{3(b-a)}]_{a}^b \\
+  &= \frac{b^3-a^3}{3(b-a)} \\
+  &= \frac{b^2+ab+a^2}{3}
+\end{align*}
+\item
+\begin{align*}
+  \textit{Var}(X) &= \frac{1}{12}(b^2-2ab+a^2) \\
+  &= \frac{1}{12}(b-a)^2
+\end{align*}
+\end{itemize}
+
+\subsection{Passage d'une uniforme centrée réduite à une uniforme (a,b)}
+Si $U \textapprox \textit{Unif}(0,1)$, on pose :
+
+$X = (b-a)U + a \textapprox \textit{Unif}(a,b)$
+
+\section{Loi exponentielle}
+
+$X \textapprox \textit{Exp}(\lambda) \textit{ et } \lambda > 0$
+
+\subsection{Densité}
+$$ f_X(x) = \lambda e^{-\lambda x} \textit{ pour } x > 0 \textit{ sinon } 0$$
+
+\subsection{FDR}
+
+$$ F_X(x) = 1 - e^{-\lambda x} $$ si $x > 0$, $0$ sinon.
+
+\subsection{E et V}
+
+$\mathbb{E}(X) = \frac{1}{\lambda}$
+
+$\textit{Var}(X) = \frac{1}{\lambda^2}$
+
+\subsection{Propriétés}
+
+Si $X \textapprox \textit{Exp}(1)$, quelle est la loi de $\frac{1}{\lambda}X$ ?
+
+$$ F_Y(x) = \mathbb{P}(Y \leq x) = \mathbb{P}(\frac{1}{\lambda} X \leq x) = \mathbb{P}(X \leq x) $$
+$$ = F_X(\lambda x)$$
+
+Donc $Y \textapprox \textit{Exp}(\lambda)$
+
+Soit $U \textapprox \textit{Unif}(0,1)$,
+$ Y = - \frac{1}{\lambda} ln(U)$
+
+$$ F_Y(x) = \mathbb{P}(- \frac{1}{\lambda}ln(U) \leq X)$$
+$$ = 0 \textit{ si } x \leq 0 $$
+
+\end{document}
