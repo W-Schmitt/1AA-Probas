@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{geometry}
+\usepackage{textcomp}
+\usepackage{dsfont}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+  % added for comments and todo
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,
+top=25mm,bottom=25mm}
+
+\title{%
+  Probabilités \\
+  \large Informations sur le projet}
+\date{23 mai 2018}
+
+\begin{document}
+\maketitle
+
+\section{Arrivées}
+\subsection{Recommandations}
+\begin{itemize}
+  \item Travailler en temps continu
+  \item Développer avec des lois exponentielles
+\end{itemize}
+
+On suppose que les arrivées se font à des instants aléatoires $T_1,T_2,...,T_n$.
+
+On pose $T_0=0$ et $X_k = T_k - T_{k-1}$
+
+On peut prendre $X_k \textapprox \textit{Exp}(\lambda)$ et les $X_k$ indépendants entre eux.
+
+$$ T_k = \sum_{i=1}^k X_i \textapprox \Gamma(k, \lambda)$$
+
+Soit $N_t$ le nombre de requêtes reçues entre $[0,t]$.
+
+\begin{align*}
+  \mathbb{P}(N_t = k) &= \mathbb{P}(T_k \leq t < T_{k+1}) \\
+  &= \mathbb{P}\Big( \frac{1}{t}T_k \leq 1 < \frac{1}{t}T_{k+1}\Big) \\
+  & \frac{1}{t}T_k \textapprox \Gamma(k, \lambda t)  \\
+  & \frac{1}{t}T_{k+1} \textapprox \Gamma(k+1, \lambda t) \\
+  &= \frac{(\lambda t)^k}{k!}e^{-\lambda t}
+\end{align*}
+
+Cf feuille pour le graphique
+
+\begin{align*}
+  \mathbb{P}(\underbrace{N_7-N_5}_{\textapprox P(2 \lambda)} = 3) &= \frac{(2 \lambda)^3}{3!}e^{-2\lambda}
+\end{align*}
+
+\section{Service}
+\paragraph{Enoncé :} le temps de service d'une requête est en moyenne de $\frac{1}{\mu}$
+
+On suppose les temps de service indépendants entre eux et on les suppose de loi $\textit{Exp}(\mu)$.
+
+\begin{itemize}
+  \item $ S_0 = 0 $, $ S_1 \textapprox \textit{Exp}(\mu) $
+  \item $ S_{i+1} = S_i + Y_i$ où $Y_i \textapprox \textit{Exp}(\mu)$, indépendant des autres $Y_j$.
+\end{itemize}
+
+$X_t$ le nombre de requêtes encore dans le système (en service + file d'attente) à l'instant t
+
+\subsection{Un seul serveur}
+
+Cf. feuille
+\begin{itemize}
+  \item 1 serveur
+  \item Arrivées: $\textit{Exp}(\lambda)$
+  \item Temps de service: $\textit{Exp}(\mu)$
+\end{itemize}
+
+Si on pose $\rho = \frac{\lambda}{\mu}$, en temps long :
+$$ \mathbb{P}(X_t = k) = \frac{1-\rho}{1-\rho^{N+1}} \rho^k $$
+avec $0 \leq k \leq N$.
+
+Cette formule permet de vérifier les simulations.
+
+Le nombre moyen de requêtes dans le système (en service + dans la file) est en temps long :
+$$ \mathbb{E}(X_t) = \frac{\rho}{1-\rho^{N+1}} \Big( \frac{1-\rho^{N-1}}{1-\rho}- N\rho^N \Big)$$
+
+\paragraph{Probabilité de perte}
+$$ \mathbb{P}(X_t = N) = \frac{1- \rho}{1-\rho^{N+1}}\rho^N $$
+
+\paragraph{Question} Si on sait qu'il y a eu $n$ arrivées de requêtes dans l'intervalle $[0,t]$,
+comment se distribuent $T_1, T_2,...,T_n$ sur cet invervalle ?
+
+Supposons $N_t = 1$, $s < t$
+
+\begin{align*}
+  \mathbb{P}(T_1 \leq s | N_t = 1) &= \frac{\mathbb{P}(T_1 \leq s, N_t = 1)}{\mathbb{P}(N_t = 1)} \\
+  &= \frac{\mathbb{P}(T_1 \leq s, T_2 > t)}{\mathbb{P}(N_t = 1)} \\
+  &= \frac{\mathbb{P}(T_1 \leq s, T_1 + X_2 > t)}{\mathbb{P}(N_t = 1)} \\
+  &= \frac{\lambda s e^{- \lambda t}}{\lambda t e^{- \lambda t}} \\
+  &= \frac{s}{t}
+\end{align*}
+
+Donc $(T_1 | N_t = 1) \textapprox \textit{Unif}(0,t)$
+
+\end{document}
