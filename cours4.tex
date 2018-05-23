@@ -1,0 +1,222 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{geometry}
+\usepackage{textcomp}
+\usepackage{dsfont}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+  % added for comments and todo
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,
+top=25mm,bottom=25mm}
+
+\title{%
+  Probabilités \\
+  \large Lois jointes et gamma}
+\date{23 mai 2018}
+
+\begin{document}
+\maketitle
+
+\section{Rappel}
+Si $X$ suit la loi à densité $f_X$, alors :
+$$ \forall A \in \mathbb{R}, \mathbb{P}(X \in A) = \int_A f_X (x) dx $$
+
+\section{Lois jointes}
+
+Il s'agit des lois des \textbf{vecteurs aléatoires}.
+
+\paragraph{Exemple :} Si $X$ et $Y$ sont des variables aléatoires, alors
+$(X, Y)$ est un vecteur aléatoire dont la loi s'appelle la loi jointe de $X$ et
+de $Y$.
+
+\subsection{Fonction de répartition des vecteurs aléatoires}
+
+Soit $(X,Y)$ un vecteur aléatoire à valeur dans $\mathbb{R}^2$, sa fonction de
+répartition est donnée par :
+\begin{align*}
+  \forall (X, Y) \in \mathbb{R}^2, F_{(X,Y)}(x,y) &= \mathbb{P}(\{X \leq x\} \cap \{Y \leq y\}) \\
+  &= \mathbb{P}(X \leq x, Y \leq y)
+\end{align*}
+
+\begin{align*}
+  F_{(X,y)} &: \mathbb{R}^2 \to [0,1] \\
+\end{align*}
+
+\subsubsection{Limites}
+\begin{align*}
+  \lim_{y \to +\infty}F_{(X,Y)}(x,y) &= \mathbb{P}(X \leq x) = F_X(x) \\
+  \lim_{x \to +\infty}F_{(X,Y)}(x,y) &= \mathbb{P}(Y \leq y) = F_Y(y) \\
+  \lim_{x \to +\infty} \lim_{y \to +\infty}F_{(X,Y)}(x,y) &= 1 \\
+\end{align*}
+
+\subsubsection{Deux principaux cas}
+\begin{itemize}
+  \item Cas discret : $$F_{(X,Y)}(x,y) = \sum_{k \leq x}\sum_{l \leq y} \mathbb{P}(X = k, Y = l) $$
+  \item Cas continu : $$F_{(X,Y)}(x,y) = \int_{- \infty}^x \Bigg( \int_{- \infty}^y f_{(X,Y)}(s,t)dt \Bigg) ds $$
+\end{itemize}
+
+\subsection{Fonction de densité}
+La fonction
+\begin{align*}
+  f_{(X,Y)} &: \mathbb{R}^2 \to \mathbb{R}^+
+\end{align*}
+est telle que $$ \int \int_{\mathbb{R}^2} f_{(X,Y)}(x,y)dxdy = 1 $$
+est appelée \textbf{densité jointe}.
+
+\subsubsection{Densités marginales}
+
+Si $(X,Y)$ est à densité $$ f_{(X,Y)}(s,t) $$ alors :
+\begin{align*}
+  f_X(x) &= \int_{- \infty}^{+ \infty} f_{(X,Y)}(x,t)dt \\
+  f_Y(y) &= \int_{- \infty}^{+ \infty} f_{(X,Y)}(s,y)ds
+\end{align*}
+
+Ces densités sont appelées \textbf{densités marginales}.
+
+\subsection{Propriétés générales}
+Si $(X,Y)$ est un vecteur aléatoire à densité $f_{(X,Y)}$, alors :
+\begin{itemize}
+  \item $\mathbb{P}\big( (X,Y) \in \textit{Dom} \big) = \int \int_{\textit{Dom}} f_{(X,Y)}(s,t) dtds $
+  \item Si $X$ et $Y$ sont indépendantes, alors $f_{(X,Y)}(x,y) = f_X(x) f_Y(y)$
+  \item Lois conditionnelles $f_{(X \textbackslash Y = y)}(x) := \frac{f_{(X,Y)}(x,y)}{f_Y(y)}$
+\end{itemize}
+
+\section{Lois gamma}
+
+$\Gamma(n,\lambda), n \in \mathbb{N}^*, \lambda > 0$
+
+\subsection{Densité}
+
+$ f_X(x) = \frac{\lambda^n}{(n-1)} x^{n-1}e^{- \lambda x} \mathds{1}_{\mathbb{R}^{+*}}$
+
+\paragraph{Exemple} $ \Gamma(1, \lambda) f_X(x) = \lambda e^{- \lambda x} \mathds{1}_{\mathbb{R}^{+*}} $
+
+\subsection{Fonction génératrice des moments}
+
+\paragraph{Rappel } On a déjà montré que si $X \textapprox \textit{Exp}(\lambda)$, alors
+$ M_X(t) = \mathbb{E}(e^{tx}) = \frac{\lambda}{\lambda - t} $, $ t \leq \lambda $
+
+\paragraph{Exemple}
+Soit $Y \textapprox \Gamma (n, \lambda)$
+\begin{align*}
+  M_Y(t) &= \mathbb{E}(e^{tY}) \\
+  &= \int_0^{+ \infty} e^{ty} \frac{\lambda^n}{(n-1)!} y^{n-1} e^{- \lambda y} dy \\
+  &= \Big( \frac{\lambda}{\lambda - t} \Big)^n \int_0^{+ \infty} \frac{(\lambda - t)^n}{(n-t)!} y^{n-1} e^{-(\lambda -t)y}dy \\
+  &= \Big( \frac{\lambda}{\lambda - t} \Big)^n
+\end{align*}
+
+\paragraph{Proposition}
+Soient $X_1, X_2, ..., X_n$ des variables aléatoires indépendantes de loi $\textit{Exp}(\lambda)$, $\lambda > 0$, alors la variable aléatoires $Y = \sum_{i = 1}^n X_i \textapprox \Gamma(n, \lambda)$.
+
+\paragraph{Remarque}
+\begin{itemize}
+  \item Si $X \textapprox \textit{Unif}(0,1)$, alors $- \frac{1}{\lambda} \textit{ln}(U) \textapprox \textit{Exp}(\lambda)$
+  \item Si $U_1,...,U_n$ sont des variables aléatoires indépendantes de loi $\textit{Unif}(0,1)$, alors $$ - \frac{1}{\lambda} \sum_{i=1}^n \textit{ln}(U_i) = - \frac{1}{\lambda} \Big( \prod_{i=1}^n U_i \Big) \textapprox \Gamma(n, \lambda) $$
+\end{itemize}
+
+\subsection{Espérance et variance}
+$$ \mathbb{E}(X) = \frac{n}{\lambda} $$
+$$ \textit{Var}(X) = \frac{n}{\lambda^2} $$
+$$ M_X(t) = \Big( \frac{\lambda}{\lambda - t} \Big)^n $$
+Car les différentes exponentielles sont indépendantes !
+
+\section{Loi de Poisson}
+$P(\lambda)$, $\lambda > 0$
+
+On a vu que si $X \textapprox P(\lambda)$, sa fonction génératrice des probabilités s'écrit, pour $s < 1$ :
+$$ G_X(s) = e^{- \lambda (1 - s)} $$
+
+\paragraph{Exemple}
+Soit $X \textapprox P(\lambda)$, $Y \textapprox P(\mu)$, avec $\lambda > 0$ et $\mu > 0$
+
+Supposons $X$ indépendant de $Y$, quelle est la loi de $X + Y$ ?
+
+\begin{align*}
+  G_{X=Y}(s) &= G_X(s) \times G_Y(s) \\
+  &= e^{-\lambda (1-s)} \times e^{-\mu (1-s)} \\
+  &= e^{-( \lambda + \mu)(1-s)}
+\end{align*}
+
+Il s'agit d'une fonction génératrice d'une $P(\lambda + \mu)$.
+
+\paragraph{Propriété } Soient $X_1,...,X_n$ des variables aléatoires indépendantes
+de loi de Poisson de paramètres respectifs $\lambda_1,...,\lambda_n$.
+Alors la variable aléatoire $$ Y = \sum_{i=1}^n X_i \textapprox P\Big( \sum_{i=1}^n \lambda_i \Big) $$
+
+\subsection{Algorithme de simulation d'une loi $P(\lambda)$}
+\begin{minted}{haskell}
+  C = 0
+  U = RANDOM
+  TANT QUE U > exp(- lambda) FAIRE
+    C = C + 1
+    U = U * RANDOM
+  N = C
+\end{minted}
+
+\paragraph{Dis moi Jamy, pourquoi ça marche cet algorithme ?}
+\begin{align*}
+  \mathbb{P}(N = 0) &= \mathbb{P}(U \leq e^{- \lambda}) \\
+  &= e^{- \lambda}
+\end{align*}
+
+Pour $k \geq 1$ :
+\begin{align*}
+  \mathbb{P}(N=k) &= \mathbb{P}\bigg(\prod_{i=0}^k U_i \leq e^{- \lambda} < \prod_{i=0}^{k-1}U_i\bigg) \\
+  &= \mathbb{P}\Big[ \textit{ln}\big(\prod_{i=0}^k U_i \big) \leq - \lambda < \textit{ln}\big(\prod_{i=0}^{k-1}U_i \big) \Big] \\
+  &= \mathbb{P}\Big[ -\textit{ln}\big(\prod_{i=0}^k U_i \big) \geq  \lambda > -\textit{ln}\big(\prod_{i=0}^{k-1}U_i \big) \Big] \\
+  &= \mathbb{P}\Big[ -\frac{1}{\lambda}\textit{ln}\big(\prod_{i=0}^k U_i \big) \geq  1 > -\frac{1}{\lambda}\textit{ln}\big(\prod_{i=0}^{k-1}U_i \big) \Big] \\
+  T_{n+1} &= -\frac{1}{\lambda}\textit{ln}\big(\prod_{i=0}^{k-1}U_i \big) \textapprox \Gamma (n+1, \lambda) \\
+  T_{k+1} &= T_k - \frac{1}{\lambda} \textit{ln}(U_k) \\
+  &= T_k + X_{k+1} & \text{où } X_{k+1} = - \frac{1}{\lambda} \textit{ln}(U_{k+1})
+\end{align*}
+
+\begin{itemize}
+  \item $T_{k} \textapprox P(k, \lambda)$
+  \item $X_{k+1} \textapprox \textit{Exp}(\lambda)$
+  \item $T_{k} et X_{k+1}$ sont indépendantes
+\end{itemize}
+
+\begin{align*}
+  f_{(X_{k+1}, T_k)}(x,y) &= f_{X_{k+1}}(x)f_{T_k}(y) \\
+  &= \lambda e^{- \lambda x} \frac{\lambda}{(k-1)!}y^{k-1}e^{- \lambda y} \mathds{1}_{x > 0, y > 0}
+\end{align*}
+
+\begin{align*}
+  \mathbb{P}(N=k) &= \mathbb{P}(T_k + X_{k+1} \geq 1 > T_k) \\
+  &= \mathbb{P}\big( (X_{k+1}, T_k) \in \Delta \big) \\
+  &= \int \int_{\Delta}f_{X_{k+1},T_k}(x,y)dxdy \\
+  \Delta &= \big\{ (x,y) \in \mathbb{R}^{+*} \times \mathbb{R}^{+*}: x+y \geq 1 > y \big\}
+\end{align*}
+
+\begin{tikzpicture}
+  \begin{axis}[
+    axis lines = left
+  ]
+  \addplot[color=red]{1-x};
+  \addplot[color=blue]{1};
+  \addplot[color=black]{0};
+\end{axis}
+\end{tikzpicture}
+
+$\Delta$ est entre bleu, noir et à droite de rouge.
+
+\begin{align*}
+  \mathbb{P}(N=k) &= \int_0^1 \frac{\lambda^k}{(k-1)!} y^{k-1} e^{- \lambda y} \Big( \int_{1-y}^{+ \infty} \lambda e^{- \lambda x} dx \Big) dy \\
+  &= \int_0^1 \frac{\lambda^k}{(k-1)!} y^{k-1} e^{- \lambda y} \Big[ -e^{-\lambda x} \Big]_ {1-y}^{+ \infty} dy \\
+  &= \frac{\lambda ^k}{(k-1)!} \int_0^1 y^{k-1} e^{- \lambda y} e^{- \lambda (1-y)} dy \\
+  &= \frac{\lambda^k}{(k-1)!} e^{- \lambda} \int_0^1 y^{k-1} dy \\
+  &= \frac{\lambda^k}{k!} e^{- \lambda}
+\end{align*}
+
+\end{document}
