@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{minted}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{textcomp}
+\usepackage{dsfont}
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\newcommand*\xoverline[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB=\ht\myboxA%
+    \dp\myboxB=\dp\myboxA%
+    \wd\myboxB=#1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+  % added for comments and todo
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,
+top=25mm,bottom=25mm}
+
+\title{%
+  Probabilités \\
+  \large Lois des grands nombres et TCL}
+
+\date{29 mai 2018}
+
+\begin{document}
+\maketitle
+
+\section{Loi des grands nombres}
+
+\subsection{Énoncé}
+Soient $X_1, X_2,...$ une suite de variables aléatoires indépendamment et
+identiquement distribuées (\textit{iid}), telles que $\mu = \mathbb{E}(X_i)$.
+
+Alors, on a :
+\begin{align*}
+  \lim_{n \to + \infty} \frac{1}{n} \sum_{i=1}^n X_i = \mu
+\end{align*}
+
+avec probabilité 1.
+
+\subsection{Application}
+
+Supposons $B_1,B_2,...$ des variables aléatoires de loi de Bernouli $b(p)$
+indépendantes, alors :
+
+$$ \frac{1}{n} \sum_{i=1}^n B_i \xrightarrow[n \to + \infty]{} p $$
+
+\subsection{Exemple}
+On répète indépendamment et dans les mêmes conditions une expérience.
+
+On note $A_i$ : l'évènement $A$ s'est produit lors de l'expérience $i$.
+Alors on a :
+
+$$ \mathbb{P}(A) = \lim_{n \to + \infty} \frac{1}{n} \sum_{i=1}^n \mathds{1}_{A_i} $$
+
+\section{Théorême central limite}
+
+\subsection{Énoncé}
+Soient $X_1, X_2,...$ une suite de variables aléatoires \textit{iid}, telles
+que :
+$ \mu = \mathbb{E}(X_i) $ et $\sigma^2 = \textit{Var}(X_i) > 0 $
+
+On pose :
+\begin{itemize}
+  \item $S_n = \sum_{i=1}^n X_i$
+  \item \[ \xoverline{X_n} = \frac{1}{n}S_n \]
+  \item \[ Z_n = \frac{S_n - n \mu}{\sigma \sqrt{n}} = \frac{\xoverline{X_n} - \mu}{\sigma / \sqrt{n}}\]
+\end{itemize}
+
+Alors :
+
+\begin{align*}
+  \lim_{n \to + \infty} \mathbb{P}(Z_n \leq x) = \Phi (x)
+\end{align*}
+
+Où :
+
+$$ \Phi (x) = \int_{- \infty}^x \frac{1}{\sqrt{2 \pi}} e^{-\frac{t^2}{2}} dt$$
+
+On note le résultat $$Z_n \xrightarrow[n \to +\infty]{\mathcal{L}} \mathcal{N}(0,1)$$
+
+\subsection{Remarque}
+La vitesse de convergence de $\xoverline{X_n}$ vers $\mu$ est de l'ordre de $\frac{\sigma}{\sqrt{n}}$
+
+\end{document}
