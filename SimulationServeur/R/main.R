@@ -12,22 +12,28 @@ stats = TRUE
 priorities = c(0.1,0.3,0.6)
 
 time.current = 0
+
+# Etat de la file d'attente
 queue = c(0,0,0)
-launched = c(0,0,0)
+
+# Nombre de requêtes servies, par priorité
 served = c(0,0,0)
 
 # Requêtes abandonnées, triées par priorité
 dropped = c(0,0,0)
 step = 0
-queueState = c(time.duration*max(lambda, mu))
-priorityQueueState = c(time.duration*max(lambda, mu))
-mediumQueueState = c(time.duration*max(lambda, mu))
-lowQueueState = c(time.duration*max(lambda, mu))
-timeHistory = c(time.duration*max(lambda, mu))
+if (chart || stats) {
+  # Allocation mémoire des tableaux pour les statistiques
+  # Le gain de performance est substantiel, cf. rapport
+  queueState = c(time.duration*max(lambda, mu))
+  priorityQueueState = c(time.duration*max(lambda, mu))
+  mediumQueueState = c(time.duration*max(lambda, mu))
+  lowQueueState = c(time.duration*max(lambda, mu))
+  timeHistory = c(time.duration*max(lambda, mu))
+}
 queries = 0
 
-nextService.time = rexp(1, mu)
-nextQuery.time = rexp(1, lambda)
+nextQuery.time = 0
 nextQuery.priority = 0
 
 # Initialisation des temps de service pour les différents serveurs
@@ -36,6 +42,7 @@ for (i in 1:serverCount) {
   nextService.times[i] = rexp(1, mu)
 }
 
+# Renvoie le prochain temps de service
 nextService.time = function() {
   nextService.server <<- which.min(nextQuery.time)
   return(min(nextService.times))
@@ -81,6 +88,7 @@ service = function() {
 }
 
 main <- function() {
+  query()
   while (time.current < time.duration) {
     if (time.current == nextQuery.time) {
       query()

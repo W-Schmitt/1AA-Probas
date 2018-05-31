@@ -42,7 +42,7 @@ Cette représentation graphique permet de constater que les requêtes prioritair
 
 ## Choix techniques
 
-### Economie de mémoire et CPU pour les statistiques
+### Économie de mémoire et CPU pour les statistiques
 Les tableaux permettant de générer les graphiques et les moyennes sont alloués statiquement en début de traitement grâce aux paramètres `lambda`, `mu` et `duration`. La concaténation de tableaux dans _R_ est en effet peu performante, puisque concaténer une valeur à un tableau implique que le moteur __recopie l'intégralité du tableau__ avant d'ajouter la nouvelle valeur. Pour des traitements longs, comme possible dans cette simulation, les chutes de performances sont énormes.
 
 ### Nombre de serveurs et capacité
