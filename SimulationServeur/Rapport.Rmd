@@ -33,9 +33,9 @@ La simulation a tourné pour les valeurs suivantes :
 Cette représentation graphique permet de constater que les requêtes prioritaires sont traitées avant les requêtes moins prioritaires, le service fonctionne correctement, cela se vérifie par les statistiques données en fin de traitement (si `stats = TRUE`) :
 
 ```
-[1] "Moyenne des priorités hautes 0.391194968553459"
-[1] "Moyenne des priorités moyennes 0.725786163522013"
-[1] "Moyenne des priorités basses 4.99496855345912"
+"Moyenne des priorités hautes 0.391194968553459"
+"Moyenne des priorités moyennes 0.725786163522013"
+"Moyenne des priorités basses 4.99496855345912"
 ```
 
 

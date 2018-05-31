@@ -3,7 +3,7 @@ serverCapacity = 10
 serverCount = 2
 mu = 1.9
 lambda = 2
-time.duration = 200000
+time.duration = 200
 debug = FALSE
 chart = FALSE
 stats = TRUE
@@ -11,6 +11,7 @@ stats = TRUE
 # Proportions Pi pour les probabilités des requêtes
 priorities = c(0.1,0.3,0.6)
 
+# Indicateur de temps
 time.current = 0
 
 # Etat de la file d'attente
@@ -21,6 +22,8 @@ served = c(0,0,0)
 
 # Requêtes abandonnées, triées par priorité
 dropped = c(0,0,0)
+
+# Pas courant
 step = 0
 if (chart || stats) {
   # Allocation mémoire des tableaux pour les statistiques
@@ -37,14 +40,14 @@ nextQuery.time = 0
 nextQuery.priority = 0
 
 # Initialisation des temps de service pour les différents serveurs
-nextService.times = c(serverCount)
+nextService.times = c(1:serverCount)
 for (i in 1:serverCount) {
   nextService.times[i] = rexp(1, mu)
 }
 
 # Renvoie le prochain temps de service
 nextService.time = function() {
-  nextService.server <<- which.min(nextQuery.time)
+  nextService.server <<- which.min(nextService.times)
   return(min(nextService.times))
 }
 
@@ -76,6 +79,7 @@ query = function() {
   nextQuery.time <<- nextQuery.time + rexp(1, lambda)
 }
 
+# Sert une requête en respectant les priorités
 service = function() {
   for (i in 1:length(priorities)) {
     if (queue[i] > 0) {
@@ -126,7 +130,7 @@ main <- function() {
     legend("topleft",legend=c("Requêtes totales","Priorité haute","Priorité moyenne","Priorité basse"), col=c("black", "red","green","blue"),lty=c(1,1,1,1), ncol=1)
   }
   if (stats) {
-    print('STATISTIQUES')
+    print("STATISTIQUES")
     rho <- lambda/mu
     simulated.avgQueries = queries/step
     simulated.dropRate = sum(dropped)/step
@@ -135,14 +139,14 @@ main <- function() {
     gap.avgQueries = simulated.avgQueries / theoretical.avgQueries
     gap.dropRate = simulated.dropRate / theoretical.dropRate
     print("Moyenne de requêtes")
-    print(paste("Théorie :", theoretical.avgQueries))
-    print(paste("Simulation :", simulated.avgQueries))
-    print(paste("Rapport :", gap.avgQueries))
+    print(paste("- Théorie :\t", theoretical.avgQueries))
+    print(paste("- Simulation :\t", simulated.avgQueries))
+    print(paste("- Rapport :\t", gap.avgQueries))
 
     print("Taux de rejet")
-    print(paste("Théorie :", theoretical.dropRate))
-    print(paste("Simulation :", simulated.dropRate))
-    print(paste("Rapport :", gap.dropRate))
+    print(paste("- Théorie :", theoretical.dropRate))
+    print(paste("- Simulation :", simulated.dropRate))
+    print(paste("- Rapport :", gap.dropRate))
 
     print(paste("Moyenne des priorités hautes", mean(priorityQueueState)))
     print(paste("Moyenne des priorités moyennes", mean(mediumQueueState)))
@@ -151,4 +155,3 @@ main <- function() {
 }
 
 main()
-
