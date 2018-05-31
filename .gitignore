@@ -4,3 +4,4 @@
 *.log
 *.synctex.gz
 _minted*
+.Rproj.user
