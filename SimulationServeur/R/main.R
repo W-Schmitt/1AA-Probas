@@ -1,6 +1,6 @@
 # Paramètres
 serverCapacity = 10
-serverCount = 1
+serverCount = 2
 mu = 1.9
 lambda = 2
 time.duration = 200000
@@ -29,6 +29,17 @@ queries = 0
 nextService.time = rexp(1, mu)
 nextQuery.time = rexp(1, lambda)
 nextQuery.priority = 0
+
+# Initialisation des temps de service pour les différents serveurs
+nextService.times = c(serverCount)
+for (i in 1:serverCount) {
+  nextService.times[i] = rexp(1, mu)
+}
+
+nextService.time = function() {
+  nextService.server <<- which.min(nextQuery.time)
+  return(min(nextService.times))
+}
 
 # Retourne la taille effective de la queue
 # Prenant en compte le nombre de serveurs.
@@ -66,7 +77,7 @@ service = function() {
       break
     }
   }
-  nextService.time <<- nextService.time + rexp(1, mu)
+  nextService.times[nextService.server] <<- nextService.times[nextService.server] + rexp(1, mu)
 }
 
 main <- function() {
@@ -74,15 +85,17 @@ main <- function() {
     if (time.current == nextQuery.time) {
       query()
     }
-    if (time.current == nextService.time) {
-      service()
+    if (time.current == nextService.time()) {
+      for (i in 1:serverCount) {
+        service()
+      }
     }
 
     # Sélection de l'étape suivante : un temps de service ou un temps de requête
-    if (nextQuery.time < nextService.time) {
+    if (nextQuery.time < nextService.time()) {
       time.current <<- nextQuery.time
     } else {
-      time.current <<- nextService.time
+      time.current <<- nextService.time()
     }
     queries <<- queries + sum(queue)
     queueState[step] <<- sum(queue)
@@ -98,11 +111,11 @@ main <- function() {
   print(dropped)
 
   if (chart) {
-      plot(x=timeHistory, y=queueState, type="l", xlab="Temps", ylab="Requêtes")
-      lines(x=timeHistory, y=priorityQueueState, col="red", ylab="Priorité haute")
-      lines(x=timeHistory, y=mediumQueueState, col="green", ylab="Priorité moyenne")
-      lines(x=timeHistory, y=lowQueueState, col="blue", ylab="Priorité basse")
-      legend("topleft",legend=c("Requêtes totales","Priorité haute","Priorité moyenne","Priorité basse"), col=c("black", "red","green","blue"),lty=c(1,1,1,1), ncol=1)
+    plot(x=timeHistory, y=queueState, type="l", xlab="Temps", ylab="Requêtes")
+    lines(x=timeHistory, y=priorityQueueState, col="red", ylab="Priorité haute")
+    lines(x=timeHistory, y=mediumQueueState, col="green", ylab="Priorité moyenne")
+    lines(x=timeHistory, y=lowQueueState, col="blue", ylab="Priorité basse")
+    legend("topleft",legend=c("Requêtes totales","Priorité haute","Priorité moyenne","Priorité basse"), col=c("black", "red","green","blue"),lty=c(1,1,1,1), ncol=1)
   }
   if (stats) {
     print('STATISTIQUES')

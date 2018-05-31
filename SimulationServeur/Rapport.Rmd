@@ -15,6 +15,7 @@ Le projet a été réalisé avec _R_. Plusieurs choix importants ont été effec
 
 * Quel que soit l'état de la file, on traite toujours une requête prioritaire avant les autres, même si elle vient d'arriver.
 * Une requête arrivant vers le(s) serveur(s) est rejetée dès lors que la limite de capacité est atteinte. Cela implique qu'on ne cherche pas à supprimer une requête de priorité faible pour faire de la place à une requête prioritaire arrivant sur le(s) serveur(s).
+* S'il y a plusieurs serveurs, ceux-ci sont placés en parallèle.
 
 ## Résultats d'une petite simulation
 
