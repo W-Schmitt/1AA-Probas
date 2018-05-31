@@ -16,8 +16,9 @@ Le projet a été réalisé avec _R_. Plusieurs choix importants ont été effec
 * Quel que soit l'état de la file, on traite toujours une requête prioritaire avant les autres, même si elle vient d'arriver.
 * Une requête arrivant vers le(s) serveur(s) est rejetée dès lors que la limite de capacité est atteinte. Cela implique qu'on ne cherche pas à supprimer une requête de priorité faible pour faire de la place à une requête prioritaire arrivant sur le(s) serveur(s).
 * S'il y a plusieurs serveurs, ceux-ci sont placés en parallèle.
+* La valeur du paramètre $\lambda$ impacte les $n$ serveurs. Les temps de service suivent alors des lois de même paramètre.
 
-## Résultats d'une petite simulation
+## Résultats d'une petite simulation (1 serveur)
 
 ![](plot.png)
 
@@ -38,7 +39,29 @@ Cette représentation graphique permet de constater que les requêtes prioritair
 "Moyenne des priorités basses 4.99496855345912"
 ```
 
+## Simulation à deux serveurs
 
+Dans cette seconde simulation, les paramètres d'entrée sont les mêmes, mis à part pour `serverCount`, auquel on affecte `2`.
+
+![](plot2serv.png)
+
+Le comportement observé est complètement différent : la file d'attente ne se remplit pas et le traitement en parallèle est très efficace. Le taux d'abandon atteint zéro.
+
+## Meta-simulations : impact des paramètres
+
+### Impact de lambda
+
+On fixe arbitrairement $\mu = 1$, et on fait varier $\lambda$ de 1 à 20. La capacité est fixée à 10 et il n'y a qu'un serveur pour traiter les différentes requêtes.
+
+![](plotDroppedFLambda.png)
+
+Dès que le rapport $\frac{\lambda}{\mu}$ dépasse 5, on constate que la quantité de requêtes abandonnées explose.
+
+### Impact de la capacité d'un serveur
+
+![](droppedServCapacity.png)
+
+La capacité du serveur a également un impact fort sur le nombre de requêtes abandonnées. Pour faciliter les simulations, leur durée est faible. Cela explique les anomalies statistiques. La tendance semble être exponentiellement décroissante.
 
 ## Choix techniques
 
